@@ -13,13 +13,10 @@ app.use(bodyParser.json());
 // MongoDB Atlas connection
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(process.env.MONGO_URI); // Removed deprecated options
     console.log('MongoDB connected');
   } catch (error) {
-    console.error(error);
+    console.error('MongoDB connection error:', error.message);
     process.exit(1); // Exit process with failure
   }
 };
@@ -31,6 +28,6 @@ app.use('/api', recipeRoutes);
 
 // Port configuration
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => { // Bind to 0.0.0.0 to ensure accessibility
   console.log(`Server is running on port ${PORT}`);
 });
